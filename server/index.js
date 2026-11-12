@@ -38,7 +38,7 @@ function livereload(req, res) {
 }
 
 const files = serveStatic(PUBLIC);
-const board = new Leaderboard(path.join(HERE, 'data', 'leaderboard.json'));
+const board = new Leaderboard(process.env.MOUMOU_DATA || path.join(HERE, 'data', 'leaderboard.json'));   // MOUMOU_DATA : autre fichier (tests, captures)
 const room = new Room({ ips, log, onResult: m => {
   if (board.add(m.entries, m.mode)) { log(`leaderboard : manche ${m.mode} enregistrée`); room.broadcast({ t:'board', top:board.top() }); }
 } });

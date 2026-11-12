@@ -2,6 +2,22 @@
 
 Jeu de guerre en 3D (Three.js) dans un labyrinthe : en solo, ou jusqu'à 6 joueurs en affrontement sur le réseau local.
 
+## Captures d'écran (partie à deux)
+
+| Accueil : chacun choisit son pseudo | Écran titre à deux, avec le tableau d'honneur |
+|---|---|
+| ![Écran d'accueil](docs/screenshots/1-accueil.jpg) | ![Écran titre multijoueur](docs/screenshots/2-titre-multi.jpg) |
+
+**Manche en vue du ciel** : classement en direct en haut à gauche, chrono de 3 minutes. Le soldat vert (hôte) et le bleu (invité) sont en concurrence, et les monstres sortent de leur repaire au centre.
+
+![Manche à deux en vue du ciel](docs/screenshots/3-vue-ciel-multi.jpg)
+
+**Manche en vue 1re personne** (choisie avant la partie, la même pour tous). Sur la minimap, chacun ne voit que sa propre position.
+
+| Hôte (Sergent) | Invité (Caporal) |
+|---|---|
+| ![Vue 1re personne de l'hôte](docs/screenshots/4-fps-hote.jpg) | ![Vue 1re personne de l'invité](docs/screenshots/5-fps-invite.jpg) |
+
 ## Lancer
 
 ```sh
@@ -35,7 +51,7 @@ server/                 Node, sans dépendance
   index.js              HTTP (public/) + WebSocket /ws + rechargement auto /__livereload
   websocket.js          WebSocket minimal (RFC 6455)
   room.js               salle de 6 places : relaie l'état de l'hôte vers les invités et leurs commandes vers l'hôte
-  leaderboard.js        meilleurs scores, enregistrés dans server/data/
+  leaderboard.js        meilleurs scores, enregistrés dans server/data/ (ou le fichier de MOUMOU_DATA)
   static.js             fichiers statiques
 public/
   index.html, css/style.css
