@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Moumou</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Oswald:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+<script src="js/dev/livereload.js"></script>
+<script type="module" src="js/main.js"></script>
+</head>
+<body>
+<div id="intro">
+  <form id="introForm" autocomplete="off">
+    <div class="stamp">Ordre de mission</div>
+    <h1>MOUMOU</h1>
+    <p>Tous contre tous dans le labyrinthe. Les monstres n'épargnent personne.</p>
+    <label for="pseudo">Ton nom de soldat</label>
+    <input id="pseudo" maxlength="14" placeholder="Pseudo" spellcheck="false">
+    <button type="submit">Rejoindre le combat</button>
+  </form>
+</div>
+<div id="hud">
+  <h1>MOUMOU</h1>
+  <div><span>SCORE</span><b id="score">0</b></div>
+  <div><span>RECORD</span><b id="hi">0</b></div>
+  <div><span id="levelLbl">NIVEAU</span><b id="level">1</b></div>
+  <div><span>CŒURS</span><b id="lives"></b></div>
+  <div><span id="wname">BALLES</span><b id="ammo">0</b></div>
+  <div><span>JOUEURS</span><b id="net">solo</b></div>
+  <div><span>SOLDAT</span><b id="who" title="Changer de pseudo">—</b></div>
+  <button id="weaponBtn">Arme suivante (E)</button>
+  <button id="viewBtn">Vue 1re personne</button>
+</div>
+<div id="stage"><div id="hurt"></div><div id="overlay"></div><div id="cross"></div><canvas id="minimap"></canvas>
+  <div id="board"></div><div id="feed"></div></div>
+<div class="help">↑ avancer · ←/→ tourner · ↓ demi-tour · clic : viser à la souris et tirer · Espace : tirer · E ou 1-5 : armes · K : katana · P : pause · M : son · V : vue du ciel / 1re personne (choisie avant la partie, la même pour tous)</div>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "name": "moumou",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Jeu de labyrinthe 3D (Three.js) en solo ou à deux sur le réseau local",
+  "type": "module",
+  "scripts": {
+    "start": "node server/index.js",
+    "check": "node --check server/index.js && for f in $(find public/js -name '*.js'); do node --check \"$f\" || exit 1; done"
+  },
+  "engines": { "node": ">=18" }
+}

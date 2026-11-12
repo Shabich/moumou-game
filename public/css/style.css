@@ -1,0 +1,103 @@
+/* Moumou — thème militaire : camouflage, pochoir, kaki et laiton */
+:root {
+  --bg:#1f2216; --panel:#2b2f1e; --panel-2:#363b26; --line:#57603a;
+  --fg:#e3dcc0; --muted:#a39d80; --khaki:#c9b98a; --brass:#d4a73a; --red:#c0392b; --olive:#4b5320;
+  --stencil:"Black Ops One", "Impact", system-ui, sans-serif;
+  --text:"Oswald", "Arial Narrow", system-ui, sans-serif;
+}
+* { box-sizing:border-box; }
+html,body { margin:0; height:100%; color:var(--fg); font-family:var(--text); overflow:hidden; background:var(--bg); }
+body {
+  display:flex; flex-direction:column; align-items:center; padding:10px 16px 8px; gap:6px;
+}
+/* camouflage sur un calque fixe à part : dessiné une fois, jamais repeint */
+body::before { content:""; position:fixed; inset:0; z-index:-1; pointer-events:none; will-change:transform;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='480' height='480'%3E%3Crect width='480' height='480' fill='%231f2216'/%3E%3Cg fill='%233a4127'%3E%3Cpath d='M40 60c40-30 110-20 120 20s-40 60-90 50-60-50-30-70z'/%3E%3Cpath d='M300 300c50-20 120 10 110 60s-80 50-120 30-30-70 10-90z'/%3E%3C/g%3E%3Cg fill='%232d331d'%3E%3Cpath d='M330 40c40-10 90 20 80 60s-70 40-100 20-20-70 20-80z'/%3E%3Cpath d='M60 330c30-30 100-30 110 10s-50 70-90 60-50-40-20-70z'/%3E%3C/g%3E%3Cg fill='%233f3a26'%3E%3Cpath d='M200 170c50-20 100 0 100 40s-60 50-100 40-40-60 0-80z'/%3E%3Cpath d='M420 200c20-20 60-10 55 20s-40 35-60 25-15-30 5-45z'/%3E%3C/g%3E%3Cg fill='%2346472c'%3E%3Cpath d='M150 410c30-20 80-10 80 20s-50 40-80 30-20-35 0-50z'/%3E%3Cpath d='M10 190c20-15 55-5 50 20s-35 30-50 20-15-30 0-40z'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 480px 480px, var(--bg); }
+
+/* ---- Bandeau ---- */
+#hud { display:flex; flex-wrap:wrap; gap:6px 14px; width:min(980px,100%); justify-content:space-between; align-items:center;
+  background:linear-gradient(#2f3420, #262a19); border:2px solid var(--line); border-radius:6px; padding:6px 14px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06), 0 4px 14px rgba(0,0,0,.4); }
+#hud h1 { margin:0; font-family:var(--stencil); font-weight:400; font-size:26px; letter-spacing:.14em; color:var(--brass);
+  text-shadow:0 2px 0 #000; }
+#hud div { text-align:center; }
+#hud span { color:var(--muted); font-size:11px; letter-spacing:.2em; font-weight:600; text-transform:uppercase; }
+#hud b { display:block; font-family:var(--stencil); font-weight:400; font-size:21px; color:var(--fg); }
+#who { cursor:pointer; color:var(--khaki) !important; border-bottom:1px dashed var(--line); max-width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+#who:hover { color:var(--brass) !important; }
+#lives { color:var(--red) !important; letter-spacing:3px; font-size:22px !important; font-family:var(--text) !important; }
+#ammo.empty { color:var(--red) !important; }
+#viewBtn, #weaponBtn { font-family:var(--text); font-weight:700; font-size:13px; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--fg); background:var(--olive); border:2px solid #6b7537; border-radius:4px; padding:7px 12px; cursor:pointer;
+  box-shadow:0 3px 0 #23270f; }
+#weaponBtn { background:#6b2a1f; border-color:#8a3b2c; }
+#viewBtn:active, #weaponBtn:active { transform:translateY(2px); box-shadow:0 1px 0 #23270f; }
+#viewBtn[hidden] { display:none; }
+
+/* ---- Zone de jeu ---- */
+#stage { position:relative; width:100%; flex:1; min-height:0; border-radius:6px; overflow:hidden;
+  contain:strict; will-change:transform;   /* calque à part : le fond de page n'est pas repeint à chaque image */
+  border:2px solid var(--line); box-shadow:0 6px 24px rgba(0,0,0,.5); }
+#stage canvas.gl { display:block; width:100%; height:100%; touch-action:none; }
+#hurt { position:absolute; inset:0; pointer-events:none; opacity:0; z-index:1;
+  background:radial-gradient(ellipse at center, rgba(0,0,0,0) 40%, rgba(150,10,10,.8) 100%); }
+#overlay { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  pointer-events:none; text-align:center; z-index:2; padding:16px; }
+#overlay .big { font-family:var(--stencil); font-size:clamp(34px,7vw,70px); color:var(--khaki); letter-spacing:.06em;
+  text-shadow:0 3px 0 #000, 0 0 30px rgba(0,0,0,.6); animation:stamp .5s ease-out; }
+#overlay .small { margin-top:10px; font-size:16px; font-weight:600; letter-spacing:.05em; color:var(--fg);
+  background:rgba(31,34,22,.85); border:1px solid var(--line); padding:6px 14px; border-radius:4px; }
+#overlay .small b { color:var(--brass); }
+@keyframes stamp { from { transform:scale(1.5); opacity:0; } to { transform:scale(1); opacity:1; } }
+.pop { position:absolute; transform:translate(-50%,-50%); font-family:var(--stencil); font-size:18px; color:#ffe08a;
+  text-shadow:0 2px 0 #000, 0 0 6px rgba(0,0,0,.6); pointer-events:none; z-index:2; }
+#minimap { position:absolute; right:12px; bottom:12px; width:min(180px,34vw); height:auto; aspect-ratio:1; z-index:2;
+  border-radius:6px; border:2px solid var(--line); background:rgba(31,34,22,.8); box-shadow:0 6px 20px rgba(0,0,0,.45);
+  display:none; pointer-events:none; }
+/* viseur */
+#cross { position:absolute; left:50%; top:50%; width:26px; height:26px; transform:translate(-50%,-50%); z-index:2;
+  display:none; pointer-events:none; border:2px solid rgba(255,255,255,.85); border-radius:50%; box-shadow:0 0 3px rgba(0,0,0,.7); }
+#cross::before, #cross::after { content:""; position:absolute; background:rgba(255,255,255,.9); box-shadow:0 0 2px rgba(0,0,0,.6); }
+#cross::before { left:10px; top:-8px; width:2px; height:38px; clip-path:polygon(0 0,100% 0,100% 35%,0 35%,0 65%,100% 65%,100% 100%,0 100%); }
+#cross::after { top:10px; left:-8px; height:2px; width:38px; clip-path:polygon(0 0,35% 0,35% 100%,0 100%,0 0,65% 0,100% 0,100% 100%,65% 100%); }
+.help { color:var(--muted); font-size:12px; letter-spacing:.03em; text-align:center; }
+.net { font-size:13px !important; }
+
+/* ---- Classements, fil des éliminations ---- */
+#board { position:absolute; left:12px; top:12px; display:none; pointer-events:none; z-index:2; }
+#feed { position:absolute; right:12px; top:12px; display:flex; flex-direction:column; gap:4px; align-items:flex-end; pointer-events:none; z-index:2; }
+.feed-item { background:rgba(31,34,22,.88); border-left:3px solid var(--red); color:var(--fg); font-weight:600; font-size:13px;
+  letter-spacing:.03em; padding:4px 10px; border-radius:3px; animation:feedIn .25s ease-out; }
+@keyframes feedIn { from { opacity:0; transform:translateX(20px); } }
+table.rank { border-collapse:collapse; background:rgba(31,34,22,.9); border:1px solid var(--line); font-size:13px;
+  box-shadow:0 4px 14px rgba(0,0,0,.4); margin:10px auto 0; pointer-events:none; color:var(--fg); }
+table.rank caption { font-family:var(--stencil); letter-spacing:.12em; color:var(--brass); padding:5px; font-size:13px;
+  background:rgba(31,34,22,.9); border:1px solid var(--line); border-bottom:0; }
+table.rank th { color:var(--muted); font-size:10px; letter-spacing:.14em; padding:3px 9px; text-transform:uppercase; font-weight:600; }
+table.rank td { padding:3px 9px; text-align:right; font-variant-numeric:tabular-nums; }
+table.rank td:nth-child(2) { text-align:left; font-weight:700; }
+table.rank tr.me td { background:rgba(212,167,58,.22); color:#fff; }
+#board table.rank { margin:0; }
+.dot { display:inline-block; width:9px; height:9px; border-radius:2px; margin-right:6px; vertical-align:middle; }
+
+/* ---- Écran d'accueil : choix du pseudo ---- */
+#intro { position:fixed; inset:0; z-index:10; display:flex; align-items:center; justify-content:center; padding:16px;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='480' height='480'%3E%3Crect width='480' height='480' fill='%231f2216'/%3E%3Cg fill='%233a4127'%3E%3Cpath d='M40 60c40-30 110-20 120 20s-40 60-90 50-60-50-30-70z'/%3E%3Cpath d='M300 300c50-20 120 10 110 60s-80 50-120 30-30-70 10-90z'/%3E%3C/g%3E%3Cg fill='%232d331d'%3E%3Cpath d='M330 40c40-10 90 20 80 60s-70 40-100 20-20-70 20-80z'/%3E%3Cpath d='M60 330c30-30 100-30 110 10s-50 70-90 60-50-40-20-70z'/%3E%3C/g%3E%3Cg fill='%233f3a26'%3E%3Cpath d='M200 170c50-20 100 0 100 40s-60 50-100 40-40-60 0-80z'/%3E%3Cpath d='M420 200c20-20 60-10 55 20s-40 35-60 25-15-30 5-45z'/%3E%3C/g%3E%3Cg fill='%2346472c'%3E%3Cpath d='M150 410c30-20 80-10 80 20s-50 40-80 30-20-35 0-50z'/%3E%3Cpath d='M10 190c20-15 55-5 50 20s-35 30-50 20-15-30 0-40z'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 480px 480px, #14160d; }
+#intro[hidden] { display:none; }
+#introForm { width:min(420px,100%); display:flex; flex-direction:column; gap:12px; align-items:stretch; text-align:center;
+  background:linear-gradient(#d9cba0, #c8b886); color:#2b2a1c; border:3px solid #8a7a4c; border-radius:4px; padding:26px 26px 22px;
+  box-shadow:0 20px 60px rgba(0,0,0,.6), inset 0 0 40px rgba(120,90,40,.25); position:relative; }
+#introForm .stamp { position:absolute; top:14px; right:-10px; transform:rotate(8deg); font-family:var(--stencil); font-size:12px;
+  letter-spacing:.12em; color:#a3261c; border:2px solid #a3261c; padding:2px 8px; background:rgba(217,203,160,.9); }
+#introForm h1 { margin:6px 0 0; font-family:var(--stencil); font-weight:400; font-size:58px; letter-spacing:.1em; color:#2f3420; }
+#introForm p { margin:0; font-size:15px; color:#4a4630; }
+#introForm label { font-size:12px; letter-spacing:.2em; text-transform:uppercase; font-weight:700; color:#5b5638; margin-top:6px; }
+#pseudo { font-family:var(--stencil); font-size:24px; letter-spacing:.06em; text-align:center; padding:10px; color:#1f2216;
+  background:#f1e8cc; border:2px solid #8a7a4c; border-radius:3px; }
+#pseudo:focus { outline:none; border-color:#4b5320; box-shadow:0 0 0 3px rgba(75,83,32,.35); }
+#introForm button { font-family:var(--stencil); font-size:18px; letter-spacing:.1em; color:var(--fg); background:var(--olive);
+  border:2px solid #2f3414; border-radius:3px; padding:12px; cursor:pointer; box-shadow:0 4px 0 #23270f; }
+#introForm button:hover { background:#5a6427; }
+#introForm button:active { transform:translateY(2px); box-shadow:0 2px 0 #23270f; }
+#introForm.shake { animation:shake .35s; }
+@keyframes shake { 20%,60% { transform:translateX(-8px); } 40%,80% { transform:translateX(8px); } }
